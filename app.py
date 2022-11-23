@@ -3,9 +3,11 @@ import numpy as np
 import pandas as pd
 import pickle
 import re
+from flask_cors import CORS
 
-app = Flask(_name_)
+app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
+CORS(app)
 
 model = pickle.load(open("model.pkl", "rb"))
 
@@ -39,13 +41,18 @@ def predict1():
         y_pred = model.predict(data)
         fix = y_pred[0]
         datafinal = int(fix)
-        return jsonify(
+        response = jsonify(
             {
                 "status": "Success",
                 "message": "Successfully making prediction",
                 "data": datafinal
             }
         )
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Methods',
+                             'GET,POST,PUT,DELETE,OPTIONS')
+        return response
 
-# if _name_ == '_main_':
+
+# if __name__ == '__main__':
 #     app.run(debug=False, host='0.0.0.0')
