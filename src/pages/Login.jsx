@@ -1,13 +1,85 @@
-import React from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import Charalogin from '../assets/images/charapeternak.png'
 import BgLogin from '../assets/images/bglogin.png'
 import Facebook from '../assets/icons/facebook2.png'
 import Instagram from '../assets/icons/instagram2.png'
 import Logo from '../assets/images/logo.svg'
+import Swal from 'sweetalert2'
 
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
+
+import UserContext from '../contexts/UserContext'
+import DokterContext from '../contexts/DokterContext'
+import AuthContext from '../contexts/AuthContext'
 
 const Login = () => {
+  const [phone, setPhone] = useState('')
+  const [password, setPassword] = useState('')
+  
+  const navigate = useNavigate()
+
+  const {user, setUser, checkPhoneAndPassword} = useContext(UserContext)
+  const {checkPhonePassword} = useContext(DokterContext)
+  const {setLogin} = useContext(AuthContext)
+
+  useEffect(() => {
+    if(localStorage.getItem('user')) {
+      setUser(JSON.parse(localStorage.getItem('user')))
+    }
+  }, [])
+
+  const loginDoctor = (e) => {
+    e.preventDefault()
+    const index = checkPhonePassword(phone, password)
+    console.log(index)
+    if(index !== -1){
+      Swal.fire({
+        icon: 'success',
+        title: 'Login Berhasil',
+        text: 'Selamat Datang di Anicare!',
+      })
+      setLogin(index, 'dokter')
+      // localStorage.setItem("token", JSON.stringify(index));
+      // localStorage.setItem("role", JSON.stringify('dokter'));
+      // navigate('/dokter')
+    }else{
+      Swal.fire({
+        icon: 'error',
+        title: 'Login Gagal',
+        text: 'Nomor Telepon atau Password salah!',
+      })
+    }
+  }
+
+  const loginUser = (e) => {
+    e.preventDefault()
+    const index = checkPhoneAndPassword(phone, password)
+    console.log(index)
+    if(index !== -1){
+      Swal.fire({
+        icon: 'success',
+        title: 'Login Berhasil',
+        text: 'Selamat Datang di Anicare!',
+      })
+      setLogin(index, 'user')
+      navigate('/profile')
+    }else{
+      Swal.fire({
+        icon: 'error',
+        title: 'Login Gagal',
+        text: 'Nomor Telepon atau Password salah!',
+      })
+    }
+  }
+
+  const handlePhone = (e) => {
+    setPhone(e.target.value)
+  }
+
+  const handlePassword = (e) => {
+    setPassword(e.target.value)
+  }
+
   return (
     <div className='lg:px-40 px-10 py-10'>
       <div className='shadow-lg bg-[#fafafa] rounded-lg lg:p-20 p-10 relative grid grid-cols-1 lg:grid-cols-2'>
@@ -29,19 +101,19 @@ const Login = () => {
         <div className='flex flex-col space-y-4 z-10'>
           <p className='text-[#1B8036] font-bold text-2xl mb-10'>Akun Anicare</p>
           <p className='font-semibold text-xl'>Nomor Telepon</p>
-          <input type="number" placeholder='0812xxxxxx' className='w-full p-3 rounded-lg border'/>
+          <input type="number" placeholder='0812xxxxxx' className='w-full p-3 rounded-lg border' value={phone} onChange={handlePhone}/>
           <p className='font-semibold text-xl pt-4'>Kata Sandi</p>
-          <input type="password" placeholder='******' className='w-full p-3 rounded-lg border'/>
-          <Link className='bg-[#1B8036] rounded-full py-4 font-medium w-full text-white shadow-md text-center' to="/profile">Masuk</Link>
+          <input type="password" placeholder='******' className='w-full p-3 rounded-lg border' value={password} onChange={handlePassword}/>
+          <button className='bg-[#1B8036] rounded-full py-4 font-medium w-full text-white shadow-md text-center' onClick={loginUser}>Masuk</button>
           <div className='flex items-center justify-center space-x-4 text-[#C7C7C7]'>
             <div className='border w-full'></div>
             <p className='font-medium'>atau</p>
             <div className='border w-full'></div>
           </div>
-          <Link to={'/dokter'} className=' rounded-full py-3 w-full border font-medium shadow-md flex items-center justify-center space-x-4'>
+          <button className=' rounded-full py-3 w-full border font-medium shadow-md flex items-center justify-center space-x-4' onClick={loginDoctor}>
             <img src={Logo} alt="" />
             <p>Masuk sebagai dokter</p>
-          </Link>
+          </button>
         </div>
       </div>
     </div>

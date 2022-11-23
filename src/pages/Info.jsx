@@ -9,7 +9,7 @@ const Info = () => {
     <div>
       <Header title={"Informasi Terkini"} />
       <Blogs />
-      <Kegiatan deskripsi={false}/>
+      <Kegiatan deskripsi={false} isfull={true}/>
     </div>
   )
 }

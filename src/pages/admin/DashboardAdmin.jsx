@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
 
-import Doc1 from '../../assets/images/doc1.png'
+import admin1 from '../../assets/images/admin1.png'
 
 import ChangePassword from '../ChangePassword'
+import MainAdmin from './MainAdmin'
+import Validation from './Validation'
+import Informasi from './Informasi'
 
 import {UserIcon, HomeIcon, NewspaperIcon, Cog6ToothIcon, KeyIcon, ArrowLeftOnRectangleIcon} from '@heroicons/react/24/outline'
 
@@ -21,11 +24,7 @@ const Admin = () => {
     },
     {
       icon: <NewspaperIcon />,
-      name: "Kegiatan",
-    },
-    {
-      icon: <Cog6ToothIcon />,
-      name: "Profile",
+      name: "Informasi",
     },
     {
       icon: <KeyIcon />,
@@ -42,8 +41,8 @@ const Admin = () => {
       {/* SIDE BAR */}
         <div className='rounded-xl border lg:w-1/4 '>
             <div className='px-10 flex flex-col items-center justify-center space-y-4 pt-5 pb-10'>
-                <img src={Doc1} alt="" className='w-32'/>
-                <p className='text-lg font-medium'>Ayu Pratiwi, S.KH</p>  
+                <img src={admin1} alt="" className='w-32'/>
+                <p className='text-lg font-medium'>Ari Setiawan</p>  
             </div>
             <div>
               {data.map((item, index) => (
@@ -59,7 +58,10 @@ const Admin = () => {
         {/* SIDE BAR */}
 
         <div className='lg:w-3/4'>
-          {active === 4 && <ChangePassword />}
+          {active == 0 && <MainAdmin />}
+          {active == 1 && <Validation />}
+          {active == 2 && <Informasi />}
+          {active === 3 && <ChangePassword />}
         </div>      
     </div>
   )

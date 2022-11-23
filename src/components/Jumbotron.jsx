@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import SapiJumbotron from '../assets/images/sapi.png'
 
 const Jumbotron = () => {
@@ -11,9 +12,9 @@ const Jumbotron = () => {
             <p className='font-semibold text-xl'>
                 Rawat kesehatan sapi Anda dan kembangkan bisnisnya dengan bantuan para ahli
             </p>
-            <button className='text-white bg-[#1B8036] rounded-full px-4 items-center justify-center py-2 lg:w-48'>
+            <Link to={"/tentang-kami"} className='text-white bg-[#1B8036] rounded-full px-4 flex items-center justify-center py-2 lg:w-48'>
                 Selengkapnya
-            </button>
+            </Link>
         </div>
         <img src={SapiJumbotron} alt="jumbotron sapi" className='lg:w-1/2' />
     </div>

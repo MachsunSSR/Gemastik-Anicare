@@ -1,51 +1,57 @@
-import React from 'react'
-import Avatar1 from '../assets/images/avatar1.png'
-import Avatar2 from '../assets/images/avatar2.png'
-import Avatar3 from '../assets/images/avatar3.png'
+import React, {useContext, useState} from 'react'
 import DiscussionCard from './DiscussionCard'
 
+import PostContext from '../contexts/PostContext'
+import UserContext from '../contexts/UserContext'
+import { useEffect } from 'react'
+
+import { PlusIcon } from '@heroicons/react/24/outline'
+import { Link } from 'react-router-dom'
+
 const Discussion = () => {
-    const data = [
-        {
-            gambar: Avatar1,
-            nama: "Alwan Fauzi",
-            tempat: "Klojen, Malang",
-            tanggal: "4 jam yang lalu",
-            judul: "Apa jenis obat yang diberikan kepada sapi yang terpapar PMK?",
-            tags: ["PMK", "Obat", "Sapi"],
-            keyword: "PMK Pada Sapi",
-        },
-        {
-            gambar: Avatar2,
-            nama: "Adam Pratama",
-            tempat: "Munjungan, Trenggalek",
-            tanggal: "3 hari yang lalu",
-            judul: "Berapa lama gejala PMK?",
-            tags: ["PMK", "Penyakit"],
-            keyword: "Gejala PMK",
-        },
-        {
-            gambar: Avatar3,
-            nama: "Irza Pradana",
-            tempat: "Tretes, Babat",
-            tanggal: "10 Menit yang lalu",
-            judul: "Apakah ada vaksin untuk PMK?",
-            tags: ["PMK", "Vaksin"],
-            keyword: "Vaksin pada PMK",
-        },
-    ]
-  return (
-    <div className='py-20 space-y-16 flex flex-col px-10 lg:px-40'>
-        <input type="text" placeholder='Cari Disini...' className='rounded-full py-2 px-3 border'/>
-        <div className='flex flex-col space-y-10'>
-            {data.map((item, index) => {
-                return (
-                    <DiscussionCard data={item} />
-                )
-            })}
+
+    const {post, addPost, setPost} = useContext(PostContext)
+
+    const [search, setSearch] = useState('')
+    
+    const handleSearch = (e) => {
+        setSearch(e.target.value)
+    }
+
+    useEffect(() => {
+        const data = JSON.parse(localStorage.getItem('post'))
+        if(data){
+            setPost(data)
+            console.log(post)
+        }
+    }, [])
+
+    return (
+        <div className='py-20 space-y-16 flex flex-col px-10 lg:px-40'>
+            <div className='w-full'>
+                <input type="text" placeholder='Cari Disini...' className='rounded-full w-full py-2 px-3 border' value={search} onChange={handleSearch}/>
+                <Link to={"/tambah-diskusi"} className='bg-[#1B8036] rounded-xl py-2 px-4 lg:w-64 flex items-center justify-center space-x-4 text-white mt-4 -mb-4'>
+                    <PlusIcon className='w-5 h-5' />
+                    <p className='text-lg'>Tambah Pertanyaan</p>
+                </Link>
+            </div>
+            <div className='flex flex-col space-y-10'>
+                {post.filter((item) => {
+                    if(search == ''){
+                        return item
+                    } else if(item.judul.toLowerCase().includes(search.toLowerCase())){
+                        return item
+                    }else{
+                        return false
+                    }
+                }).map((item, index) => {
+                    return (
+                        <DiscussionCard data={item} key={index} />
+                    )
+                })}
+            </div>
         </div>
-    </div>
-  )
+    )
 }
 
 export default Discussion

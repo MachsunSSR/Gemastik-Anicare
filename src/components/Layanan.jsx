@@ -32,8 +32,8 @@ const Layanan = () => {
             <div className='flex flex-col lg:flex-row items-center justify-center lg:space-x-12 space-y-24 lg:space-y-0'>
                 {data.map((item, index) => {
                     return (
-                        <div className='flex flex-col items-center justify-center space-y-4 bg-white rounded-xl p-10 lg:w-1/3 relative h-64' key={index}>
-                            <div className={`${item.background} p-5 rounded-full w-28 h-28 flex items-center justify-center absolute -top-14`}>
+                        <div className='flex flex-col items-center justify-center space-y-4 bg-white rounded-xl p-10 lg:w-1/3 z-10 relative h-64' key={index}>
+                            <div className={`${item.background} p-5 rounded-full w-28 h-28 flex items-center justify-center absolute z-10 -top-14`}>
                                 <img src={item.gambar} alt={item.judul} />
                             </div>
                             

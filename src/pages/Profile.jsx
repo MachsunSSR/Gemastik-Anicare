@@ -1,36 +1,37 @@
 import React from 'react'
-import TemplateAva from '../assets/images/templateava.png'
 
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
+import { useContext } from 'react'
+import UserContext from '../contexts/UserContext'
+import AuthContext from '../contexts/AuthContext'
 
 const Profile = () => {
+
+    const navigate = useNavigate()
+
+    const {user} = useContext(UserContext)
+    const idUser = localStorage.getItem("token")
+    const {setLogout} = useContext(AuthContext)
 
     const data = [
         {
             title: "Nama Lengkap",
-            value: "John Doe"
+            value: user[idUser].name
         },
         {
             title: "Alamat",
-            value: "Jalan Mawar no 7, Desa Wisata Pujon Kidul, Kec. Pujon, Kab. Malang, Jawa Timur 65391",
+            value: user[idUser].address,
         },
         {
             title: "Nomor Telepon",
-            value: "08113552304",
-        },
-        {
-            title: "Status Peternak",
-            value: "Peternak Sapi Potong",
-        },
-        {
-            title: "Tanggal Pendaftaran",
-            value: "05 Oktober 2022",
-        },
-        {
-            title: "Status Kenggotaan",
-            value: "Aktif",
+            value: user[idUser].phone,
         },
     ]
+
+    const logout = () => {
+        setLogout()
+        navigate('/login-peternak')
+    }
 
   return (
     <div className='px-10 lg:px-40 py-20'>
@@ -38,8 +39,8 @@ const Profile = () => {
             Selamat datang di Anicare
         </h1>
         <div className='flex flex-col lg:flex-row rounded-xl border py-10 my-10 px-10 items-center justify-center lg:space-x-8'>
-            <img src={TemplateAva} alt="" className='w-36 h-36'/>
-            <div className='grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-3'>
+            <img src={user[idUser].image} alt="" className='w-36 h-36 rounded-full object-cover'/>
+            <div className='grid grid-cols-1 lg:grid-cols-2'>
                 {data.map((item, index) => (
                     <div key={index} className='flex flex-col space-y-2 mt-4'>
                         <p className='font-bold text-lg'>{item.title}</p>
@@ -54,6 +55,7 @@ const Profile = () => {
                 <p className='pb-1 text-xl font-bold'>+</p>
             </div>
         </Link>
+        <Link onClick={logout} className="bg-[#1B8036] flex items-center justify-center text-white rounded-lg py-3 w-full mt-10">Logout</Link>
     </div>
   )
 }
